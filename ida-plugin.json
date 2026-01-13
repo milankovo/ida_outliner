@@ -1,0 +1,14 @@
+{
+    "IDAMetadataDescriptorVersion": 1,
+    "plugin": {
+        "name": "ida outliner",
+        "entryPoint": "outliner.py",
+        "categories": [
+            "ui-ux-and-visualization"
+        ],
+        "description": "",
+        "idaVersions": ">=9.0",
+        "logoPath": "todo.png",
+        "version": "1.0.0"
+    }
+}
