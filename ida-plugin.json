@@ -1,14 +1,29 @@
 {
     "IDAMetadataDescriptorVersion": 1,
     "plugin": {
-        "name": "ida outliner",
+        "name": "ida-outliner",
         "entryPoint": "outliner.py",
         "categories": [
             "ui-ux-and-visualization"
         ],
-        "description": "",
+        "description": "A lightweight plugin that adds the ability to mark functions as outlined in the decompiler view, making code more readable by collapsing functions to a single line.",
         "idaVersions": ">=9.0",
-        "logoPath": "todo.png",
-        "version": "1.0.0"
+        "version": "1.0.0",
+        "license": "MIT",
+        "logoPath": "logo.jpeg",
+        "keywords": [
+            "decompiler",
+            "outline",
+            "hexrays"
+        ],
+        "urls": {
+            "repository": "https://github.com/milankovo/ida_outliner"
+        },
+        "authors": [
+            {
+                "name": "Milankovo",
+                "email": "outliner@noreply.github.com"
+            }
+        ]
     }
 }
