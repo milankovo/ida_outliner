@@ -1,5 +1,5 @@
 """
-Author: Milankovo, 2025
+Author: Milankovo, 2026
 License: MIT
 """
 

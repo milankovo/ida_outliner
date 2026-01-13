@@ -48,7 +48,7 @@ MIT
 
 ## Author
 
-Milankovo, 2025
+Milankovo, 2026
 
 ## Links
 
