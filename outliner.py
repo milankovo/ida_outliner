@@ -33,13 +33,25 @@ class outline_func_action_handler_t(idaapi.action_handler_t):
         )
 
 
+class popup_hooks_t(idaapi.UI_Hooks):
+    def __init__(self, action_name):
+        idaapi.UI_Hooks.__init__(self)
+        self.action_name = action_name
+
+    def finish_populating_widget_popup(self, form, popup):
+        widget_type = idaapi.get_widget_type(form)
+        if widget_type == idaapi.BWN_PSEUDOCODE or widget_type == idaapi.BWN_DISASM:
+            idaapi.attach_action_to_popup(form, popup, self.action_name)
+
+
 class OutliningPlugin(idaapi.plugin_t):
     flags = idaapi.PLUGIN_HIDE
-    comment = "TODO"
-    help = "TODO"
+    comment = "Mark functions as outlined in decompiler view"
+    help = "Press O to outline the current function"
     wanted_name = "hx_outliner"
     actname = "hx_outliner:make_outlined"
     wanted_hotkey = ""
+    hooks = None
 
     def init(self):
         addon = idaapi.addon_info_t()
@@ -51,15 +63,23 @@ class OutliningPlugin(idaapi.plugin_t):
         idaapi.register_addon(addon)
         if not idaapi.init_hexrays_plugin():
             return idaapi.PLUGIN_SKIP
-        action = idaapi.action_desc_t(
-            self.actname, "make outlined", outline_func_action_handler_t(), "s"
-        )
-        idaapi.register_action(action)
+        
+        if idaapi.register_action(
+            idaapi.action_desc_t(
+                self.actname, "Make outlined", outline_func_action_handler_t(), "o"
+            )
+        ):
+            self.hooks = popup_hooks_t(self.actname)
+            self.hooks.hook()
+        else:
+            return idaapi.PLUGIN_SKIP
+        
         return idaapi.PLUGIN_KEEP
 
     def term(self):
+        if self.hooks:
+            self.hooks.unhook()
         idaapi.unregister_action(self.actname)
-        pass
 
     def run(self, arg):
         pass

@@ -9,8 +9,8 @@ IDA Outliner provides a convenient way to make functions "outlined" in IDA's Hex
 
 ## Features
 
-- **Keyboard Shortcut**: Press `S` to outline the current function in either pseudocode or disassembly view
-- **Context Menu Integration**: Easily toggle outlined status for functions
+- **Keyboard Shortcut**: Press `O` to outline the current function in either pseudocode or disassembly view
+- **Context Menu Integration**: Easily toggle outlined status for functions via right-click menu
 - **Works in Multiple Views**: Available in both pseudocode and disassembly windows
 
 ## Installation
@@ -34,7 +34,7 @@ IDA Outliner provides a convenient way to make functions "outlined" in IDA's Hex
 ## Usage
 
 1. Open a function in the decompiler (press F5)
-2. Press `S` or use the context menu to select "make outlined"
+2. Press `O` or right-click and select "Make outlined" from the context menu
 3. The function will be collapsed to a single line in the decompiler view
 
 ## Requirements

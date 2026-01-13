@@ -8,7 +8,7 @@
         ],
         "description": "A lightweight plugin that adds the ability to mark functions as outlined in the decompiler view, making code more readable by collapsing functions to a single line.",
         "idaVersions": ">=9.0",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "license": "MIT",
         "logoPath": "logo.jpeg",
         "keywords": [
