@@ -5,13 +5,14 @@ A lightweight IDA Pro plugin that adds the ability to mark functions as outlined
 
 ## Description
 
-IDA Outliner provides a convenient way to make functions "outlined" in IDA's Hex-Rays decompiler. When a function is marked as outlined, the decompiler will collapse it to a single line, making the code more readable when dealing with large codebases.
+IDA Outliner provides a convenient way to mark functions as outlined in IDA's Hex-Rays decompiler. Outlined functions are compiler-generated fragments created by function outlining optimization, which extracts common code sequences to save space. Marking them as outlined tells the decompiler to inline these fragments back into the calling functions, improving readability and eliminating undefined variable warnings.
 
 ## Features
 
-- **Keyboard Shortcut**: Press `O` to outline the current function in either pseudocode or disassembly view
-- **Context Menu Integration**: Easily toggle outlined status for functions via right-click menu
+- **Keyboard Shortcut**: Press `O` to mark the current function as outlined
+- **Context Menu Integration**: Right-click and select "Make outlined" from the context menu
 - **Works in Multiple Views**: Available in both pseudocode and disassembly windows
+- **Automatic Inlining**: Once marked, the decompiler automatically inlines outlined functions into their callers
 
 ## Installation
 
@@ -33,9 +34,13 @@ IDA Outliner provides a convenient way to make functions "outlined" in IDA's Hex
 
 ## Usage
 
-1. Open a function in the decompiler (press F5)
+When you encounter compiler-generated outlined function fragments (often named `OUTLINED_FUNCTION_NN` or containing `.cold.` in their name):
+
+1. Navigate to the outlined function
 2. Press `O` or right-click and select "Make outlined" from the context menu
-3. The function will be collapsed to a single line in the decompiler view
+3. The decompiler will inline the function into its callers, improving readability and eliminating undefined variable warnings
+
+**Tip:** For binaries with many outlined functions, consider automating the process with a script that identifies and marks them based on naming patterns.
 
 ## Requirements
 
@@ -57,5 +62,6 @@ Milankovo, 2026
 
 ## See Also
 
+- [Igor's Tip of the Week #106: Outlined Functions](https://hex-rays.com/blog/igors-tip-of-the-week-106-outlined-functions)
 - [HCLI Plugin Manager Documentation](https://hcli.docs.hex-rays.com/reference/packaging-your-existing-plugin/)
 - [IDA Plugin Submission Guide](https://docs.hex-rays.com/user-guide/plugins/plugin-submission-guide)
