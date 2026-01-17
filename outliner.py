@@ -7,30 +7,42 @@ import idaapi
 
 
 class outline_func_action_handler_t(idaapi.action_handler_t):
-    def __init__(self):
+    def __init__(self, action_name: str):
         idaapi.action_handler_t.__init__(self)
+        self.action_name = action_name
 
     def activate(self, ctx: idaapi.action_ctx_base_t):
         func: idaapi.func_t = ctx.cur_func
         if not func:
             return 0
-        
+
         # without this, ida complains the the action is not undo-friendly
         func = idaapi.get_func(func.start_ea)
         if not func:
             return 0
 
-        func.flags |= idaapi.FUNC_OUTLINE
+        # Toggle the outlined flag
+        func.flags ^= idaapi.FUNC_OUTLINE
         idaapi.update_func(func)
+        self.update_label(func.flags)
         return 1
 
+    def update_label(self, flags: int):
+        match flags & idaapi.FUNC_OUTLINE:
+            case 0:
+                label = "Make outlined"
+            case _:
+                label = "Clear outlined"
+        idaapi.update_action_label(self.action_name, label)
+
     def update(self, ctx: idaapi.action_ctx_base_t):
-        return (
-            idaapi.AST_ENABLE_FOR_WIDGET
-            if ctx.widget_type == idaapi.BWN_PSEUDOCODE
-            or ctx.widget_type == idaapi.BWN_DISASM
-            else idaapi.AST_DISABLE_FOR_WIDGET
-        )
+        if ctx.widget_type not in (idaapi.BWN_PSEUDOCODE, idaapi.BWN_DISASM):
+            return idaapi.AST_DISABLE_FOR_WIDGET
+
+        # Try to fetch the real function and inspect its flags
+        func: idaapi.func_t = ctx.cur_func
+        self.update_label(func.flags if func else 0)
+        return idaapi.AST_ENABLE_FOR_WIDGET
 
 
 class popup_hooks_t(idaapi.UI_Hooks):
@@ -59,21 +71,24 @@ class OutliningPlugin(idaapi.plugin_t):
         addon.name = "functions outliner"
         addon.producer = "Milankovo"
         addon.url = "https://github.com/milankovo/ida_outliner"
-        addon.version = "9.00"
+        addon.version = "1.2.0"
         idaapi.register_addon(addon)
         if not idaapi.init_hexrays_plugin():
             return idaapi.PLUGIN_SKIP
-        
+
         if idaapi.register_action(
             idaapi.action_desc_t(
-                self.actname, "Make outlined", outline_func_action_handler_t(), "o"
+                self.actname,
+                "Make outlined",
+                outline_func_action_handler_t(self.actname),
+                "o",
             )
         ):
             self.hooks = popup_hooks_t(self.actname)
             self.hooks.hook()
         else:
             return idaapi.PLUGIN_SKIP
-        
+
         return idaapi.PLUGIN_KEEP
 
     def term(self):

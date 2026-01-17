@@ -9,8 +9,7 @@ IDA Outliner provides a convenient way to mark functions as outlined in IDA's He
 
 ## Features
 
-- **Keyboard Shortcut**: Press `O` to mark the current function as outlined
-- **Context Menu Integration**: Right-click and select "Make outlined" from the context menu
+- **Keyboard Shortcut**: Press `O` to toggle the outlined state of the current function
 - **Works in Multiple Views**: Available in both pseudocode and disassembly windows
 - **Automatic Inlining**: Once marked, the decompiler automatically inlines outlined functions into their callers
 
@@ -37,7 +36,7 @@ IDA Outliner provides a convenient way to mark functions as outlined in IDA's He
 When you encounter compiler-generated outlined function fragments (often named `OUTLINED_FUNCTION_NN` or containing `.cold.` in their name):
 
 1. Navigate to the outlined function
-2. Press `O` or right-click and select "Make outlined" from the context menu
+2. Press `O` or use the context menu action
 3. The decompiler will inline the function into its callers, improving readability and eliminating undefined variable warnings
 
 **Tip:** For binaries with many outlined functions, consider automating the process with a script that identifies and marks them based on naming patterns.
